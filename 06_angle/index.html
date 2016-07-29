@@ -12,9 +12,9 @@
 </canvas>
 
 <script id="shader-vs" type="x-shader/x-vertex">
+  attribute vec2 aPos;
   attribute float aX;
   attribute float aY;
-  attribute vec2 aPos;
 
   uniform mat4 uMatrix;
   uniform float uSize;
@@ -68,8 +68,12 @@
 
         for (i = 0; i < data.length; i++) {
             data[i] = 2 * (data[i] - min) / (max - min) - 1;
+            if(Math.abs(data[i])<0.01) {
+                data[i] = 0.01;
+            }
         }
 
+        data[data.length-1] = 0;
         return data;
     }
 
@@ -97,6 +101,11 @@
         if (!gl) {
             alert("Unable to initialize WebGL. Your browser may not support it.");
             gl = null;
+        }
+
+        ext = gl.getExtension("ANGLE_instanced_arrays");
+        if (!ext) {
+            alert("Unable to initialize WebGL. Your browser does not support the array instancing extension");
         }
 
         return gl;
@@ -167,13 +176,8 @@
         gl.useProgram(shaderProgram);
 
         posAttribute = gl.getAttribLocation(shaderProgram, "aPos");
-        gl.enableVertexAttribArray(posAttribute);
-
         xAttribute = gl.getAttribLocation(shaderProgram, "aX");
-        gl.enableVertexAttribArray(xAttribute);
-
         yAttribute = gl.getAttribLocation(shaderProgram, "aY");
-        gl.enableVertexAttribArray(yAttribute);
 
         uMatrix = gl.getUniformLocation(shaderProgram, "uMatrix");
         uSize = gl.getUniformLocation(shaderProgram, "uSize");
@@ -195,22 +199,10 @@
         ];
 
         // Replicate these over and over again
-        var allVertices = new Float32Array(6 * 2 * data.x.length);
-        var xPosData = new Float32Array(6 * data.x.length);
-        var yPosData = new Float32Array(6 * data.y.length);
-        for (var i = 0; i < data.x.length; i++) {
-            var start = i * 6;
-            for (var j = 0; j < 6; j++) {
-                xPosData[start + j] = data.x[i];
-                yPosData[start + j] = data.y[i];
-            }
-            start = i * 12;
-            for (var j = 0; j < 12; j++) {
-                allVertices[start + j] = oneQuadVertices[j];
-            }
-        }
+        var xPosData = new Float32Array(data.x);
+        var yPosData = new Float32Array(data.y);
 
-        gl.bufferData(gl.ARRAY_BUFFER, allVertices, gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(oneQuadVertices), gl.STATIC_DRAW);
 
         xPosBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, xPosBuffer);
@@ -243,15 +235,20 @@
     aspect = 600 / 600;
 
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+    gl.enableVertexAttribArray(posAttribute);
     gl.vertexAttribPointer(posAttribute, 2, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, xPosBuffer);
+    gl.enableVertexAttribArray(xAttribute);
     gl.vertexAttribPointer(xAttribute, 1, gl.FLOAT, false, 0, 0);
+    ext.vertexAttribDivisorANGLE(xAttribute, 1);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, yPosBuffer);
+    gl.enableVertexAttribArray(yAttribute);
     gl.vertexAttribPointer(yAttribute, 1, gl.FLOAT, false, 0, 0);
+    ext.vertexAttribDivisorANGLE(yAttribute, 1);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
 
     function drawAll() {
         time = new Date().getTime() % 10000;
@@ -268,7 +265,8 @@
 
         gl.uniformMatrix4fv(uMatrix, false, new Float32Array(transformMatrix));
         gl.uniform1f(uSize, (Math.sin(time / 5000.0 * 2 * Math.PI) + 1.1) / 300.0);
-        gl.drawArrays(gl.TRIANGLES, 0, data.x.length * 6);
+
+        ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);
 
         requestAnimationFrame(drawAll);
     }
