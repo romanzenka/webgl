@@ -12,18 +12,21 @@
 </canvas>
 
 <script id="shader-vs" type="x-shader/x-vertex">
-  attribute vec4 aPos;
+  attribute float aX;
+  attribute float aY;
+  attribute vec2 aPos;
 
   uniform mat4 uMatrix;
-  uniform float uZoom;
+  uniform float uSize;
 
   varying vec2 vTexCoord;
 
   void main(void) {
-    gl_Position = uMatrix * vec4(aPos.x+uZoom*aPos.z, aPos.y+uZoom*aPos.w, 0.0, 1.0);
+    gl_Position = uMatrix * vec4(aX+uSize*aPos.x, aY+uSize*aPos.y, 0.0, 1.0);
 
-    vTexCoord = vec2(aPos.z, aPos.w);
+    vTexCoord = aPos;
   }
+
 
 
 </script>
@@ -34,7 +37,7 @@
   varying vec2 vTexCoord;
 
   void main(void) {
-    float r = dot(vTexCoord, vTexCoord);
+    float r = length(vTexCoord);
 
     if (r>1.0) {
         discard;
@@ -42,23 +45,24 @@
 
     gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0 - r);
   }
+
 </script>
 
 <script>
     function randn_bm() {
         var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
         var v = 1 - Math.random();
-        return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+        return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     }
 
     function makeRandomValues(offset, frequency, noise) {
-        var data = new Float32Array(300000);
+        var data = new Float32Array(1000000);
         var max = 0;
         var min = 0;
         for (var i = 0; i < data.length; i++) {
             var value = randn_bm() * noise + Math.sin(offset + frequency * i);
             data[i] = value;
-            if(value < min) {
+            if (value < min) {
                 min = value;
             }
             if (value > max) {
@@ -87,7 +91,7 @@
 
         try {
             // Try to grab the standard context. If it fails, fallback to experimental.
-            gl = canvas.getContext("webgl", { depth : false }) || canvas.getContext("experimental-webgl");
+            gl = canvas.getContext("webgl", { depth: false }) || canvas.getContext("experimental-webgl");
         }
         catch (e) {
         }
@@ -168,8 +172,14 @@
         posAttribute = gl.getAttribLocation(shaderProgram, "aPos");
         gl.enableVertexAttribArray(posAttribute);
 
+        xAttribute = gl.getAttribLocation(shaderProgram, "aX");
+        gl.enableVertexAttribArray(xAttribute);
+
+        yAttribute = gl.getAttribLocation(shaderProgram, "aY");
+        gl.enableVertexAttribArray(yAttribute);
+
         uMatrix = gl.getUniformLocation(shaderProgram, "uMatrix");
-        uZoom =  gl.getUniformLocation(shaderProgram, "uZoom");
+        uSize = gl.getUniformLocation(shaderProgram, "uSize");
     }
 
     function initBuffers() {
@@ -178,29 +188,40 @@
 
         // X, Y, texS, texT
         var oneQuadVertices = [
-            1.0, 1.0, 1.0, 1.0,   // 1
-            -1.0, 1.0, -1.0, 1.0,   // 2
-            1.0, -1.0, 1.0, -1.0,   // 3
+            1.0, 1.0,   // 1
+            -1.0, 1.0,   // 2
+            1.0, -1.0,   // 3
 
-            1.0, -1.0, 1.0, -1.0,   // 3
-            -1.0, 1.0, -1.0, 1.0,   // 2
-            -1.0, -1.0, -1.0, -1.0    // 4
+            1.0, -1.0,   // 3
+            -1.0, 1.0,   // 2
+            -1.0, -1.0    // 4
         ];
 
-        var size = 0.002; // Size of each quad
-        // TODO: This really sucks
-        var allVertices = new Float32Array(6 * 4 * data.x.length);
+        // Replicate these over and over again
+        var allVertices = new Float32Array(6 * 2 * data.x.length);
+        var xPosData = new Float32Array(6 * data.x.length);
+        var yPosData = new Float32Array(6 * data.y.length);
         for (var i = 0; i < data.x.length; i++) {
+            var start = i * 6;
             for (var j = 0; j < 6; j++) {
-                var start = i * 24 + j * 4;
-                allVertices[start + 0] = oneQuadVertices[j * 4 + 0] * size + data.x[i];
-                allVertices[start + 1] = oneQuadVertices[j * 4 + 1] * size + data.y[i];
-                allVertices[start + 2] = oneQuadVertices[j * 4 + 2];
-                allVertices[start + 3] = oneQuadVertices[j * 4 + 3];
+                xPosData[start + j] = data.x[i];
+                yPosData[start + j] = data.y[i];
+            }
+            start = i * 12;
+            for (var j = 0; j < 12; j++) {
+                allVertices[start + j] = oneQuadVertices[j];
             }
         }
 
         gl.bufferData(gl.ARRAY_BUFFER, allVertices, gl.STATIC_DRAW);
+
+        xPosBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, xPosBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, xPosData, gl.STATIC_DRAW);
+
+        yPosBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, yPosBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, yPosData, gl.STATIC_DRAW);
     }
 
     var canvas = document.getElementById('webGlCanvas');
@@ -224,6 +245,16 @@
     zoom = 1;
     aspect = 600 / 600;
 
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+    gl.vertexAttribPointer(posAttribute, 2, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, xPosBuffer);
+    gl.vertexAttribPointer(xAttribute, 1, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, yPosBuffer);
+    gl.vertexAttribPointer(yAttribute, 1, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     function drawAll() {
         time = new Date().getTime() % 10000;
@@ -238,12 +269,9 @@
         // Clear the color as well as the depth buffer.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
-        gl.vertexAttribPointer(posAttribute, 4, gl.FLOAT, false, 0, 0);
         gl.uniformMatrix4fv(uMatrix, false, new Float32Array(transformMatrix));
-        gl.uniform1f(uZoom, (Math.sin(time/5000.0*2*Math.PI)+1.0)/100.0);
-        gl.drawArrays(gl.TRIANGLES, 0, data.x.length);
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        gl.uniform1f(uSize, (Math.sin(time / 5000.0 * 2 * Math.PI) + 1.1) / 300.0);
+        gl.drawArrays(gl.TRIANGLES, 0, data.x.length*6);
 
         requestAnimationFrame(drawAll);
     }
