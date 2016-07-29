@@ -198,40 +198,39 @@
     var gl = initWebGL(canvas);
     // http://math.hws.edu/graphicsbook//demos/c6/webgl-limits.html
 
-    if (gl) {
-        // Set clear color to black, fully opaque
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        // Enable depth testing
-        gl.enable(gl.DEPTH_TEST);
-        // Near things obscure far things
-        gl.depthFunc(gl.LEQUAL);
-        // Clear the color as well as the depth buffer.
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    // Set clear color to black, fully opaque
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    // Enable depth testing
+    gl.enable(gl.DEPTH_TEST);
+    // Near things obscure far things
+    gl.depthFunc(gl.LEQUAL);
+    // Clear the color as well as the depth buffer.
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        initShaders();
-        initBuffers();
+    initShaders();
+    initBuffers();
 
-        zoom = 1;
-        aspect = 800 / 600;
+    // Enable alphablend
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
-        transformMatrix = [
-            zoom / aspect, 0, 0, 0,
-            0, zoom, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        ];
+    zoom = 1;
+    aspect = 800 / 600;
 
-        // Enable alphablend
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+    transformMatrix = [
+        zoom / aspect, 0, 0, 0,
+        0, zoom, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    ];
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
-        gl.vertexAttribPointer(posAttribute, 4, gl.FLOAT, false, 0, 0);
-        var uniform = gl.getUniformLocation(shaderProgram, "uMatrix");
-        gl.uniformMatrix4fv(uniform, false, new Float32Array(transformMatrix));
-        gl.drawArrays(gl.TRIANGLES, 0, data.x.length);
 
-    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+    gl.vertexAttribPointer(posAttribute, 4, gl.FLOAT, false, 0, 0);
+    var uniform = gl.getUniformLocation(shaderProgram, "uMatrix");
+    gl.uniformMatrix4fv(uniform, false, new Float32Array(transformMatrix));
+    gl.drawArrays(gl.TRIANGLES, 0, data.x.length);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 </script>
 
 </body>
