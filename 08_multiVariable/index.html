@@ -77,8 +77,8 @@
 
   void main(void) {
     float r = length(vTexCoord);
-    float rr = r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r;
-
+    float rr = exp2(10.0 * log2(r));
+    
     if (rr>1.0) {
         discard;
     }
