@@ -1,5 +1,5 @@
 <html>
-<head><title>Animate a scatterplot</title></head>
+<head><title>Animate a scatterplot using ANGLE extension</title></head>
 <style>
     body {
         background: black;
@@ -68,9 +68,6 @@
 
         for (i = 0; i < data.length; i++) {
             data[i] = 2 * (data[i] - min) / (max - min) - 1;
-            if(Math.abs(data[i])<0.01) {
-                data[i] = 0.01;
-            }
         }
 
         data[data.length-1] = 0;

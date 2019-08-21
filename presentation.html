@@ -1,0 +1,123 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/moon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/monokai-sublime.min.css">
+    <style type="text/css">
+        table.hljs-ln {
+            font-size: 20px;
+        }
+        im { color: white }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section  data-background-color="#000000">
+            <img style="border:0; background: none; box-shadow: none" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/2880px-WebGL_Logo.svg.png">
+            Roman Ženka
+        </section>
+        <section>
+            <a href="https://github.com/romanzenka/webgl">github.com / romanzenka / webgl</a>
+        </section>
+        <section>
+            <h2>Better Tutorials</h2>
+            <a href="https://webglfundamentals.org/">webglfundamentals.org</a><br>
+            <a href="https://khronos.org/webgl">khronos.org / webgl</a>
+        </section>
+        <section>
+            <h2>Better Demos</h2>
+            <a href="https://mrdoob.com/">mrdoob.com</a><br>
+            <a href="https://www.shadertoy.com/">shadertoy.com</a><br>
+            <a href="https://threejs.org/">threejs.org</a>
+        </section>
+        <section>
+            <h2><span class="fragment fade-out">Better</span> Libraries</h2>
+            <a href="https://stack.gl/">stack.gl</a><br>
+            <a href="https://threejs.org/">threejs.org</a><br>
+            <a href="https://gist.github.com/dmnsgn/76878ba6903cf15789b712464875cfdc">... and many others</a>
+        </section>
+
+        <section>
+            <h3>Mind shift</h3><br>
+            <h3>2D DataViz</h3><br>
+            <h3>GPGPU</h3>
+        </section>
+        <section>
+            <h1>MIND  SHIFT</h1>
+        </section>
+        <section>
+            <p>Your target is human eye <span class="fragment fade-in" data-fragment-index="1">- <im>CHEAT</im></span></p>
+            <p>Your computer is inadequate <span class="fragment fade-in" data-fragment-index="2">- <im>GPU</im></span></p>
+        </section>
+        <section>
+            First make it <span class="fragment fade-out">right, then make it</span> fast
+        </section>
+        <section>
+            <table class="stretch">
+                <tr>
+                    <td>
+                        <img src="img/HSW-E-Die-Mapping-Hi-Res.jpg">
+                    </td>
+                    <td>
+                        <h2 align="center">Turing TU102</h2>
+                        <img src="img/turing_tu102_d.png">
+                    </td>
+                </tr>
+            </table>
+
+        </section>
+        <section>
+            The TU102 GPU includes <br>
+            six Graphics Processing Clusters (GPCs),<br>
+            36 Texture Processing Clusters (TPCs),<br>
+            and 72 Streaming Multiprocessors (SMs).<br>
+            <p>
+            Each GPC includes a dedicated raster engine,<br>
+                6 TPCs, with each TPC including 2 SMs.<br>
+                Each SM contains 64 CUDA Cores,<br>
+                8 Tensor Cores,<br>
+                a 256 KB register file,<br>
+                4 texture units,<br>
+                and 96 KB of L1/shared memory.
+        </section>
+        <section>
+            <span class="fragment fade-out" data-fragment-index="1"><im>4,608</im> CUDA</span> Cores<br>
+            <span class="fragment fade-out" data-fragment-index="1"><im>72</im> Raytracing</span> Cores<br>
+            <span class="fragment fade-out" data-fragment-index="1"><im>576</im> Tensor</span> Cores<br>
+            <span class="fragment fade-out" data-fragment-index="1"><im>288</im> Texture Units<br></span>
+        </section>
+        <section data-background-iframe="01_init/index.html" data-background-interactive></section>
+        <section>
+            <pre><code class="js">
+import React, { useState } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+        </button>
+    </div>
+  );
+}
+</code></pre>
+        </section>
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    transition: 'none',
+    margin: 0.01,
+    dependencies: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.min.js', async: true },
+    ]
+  });
+</script>
+</body>
+</html>
