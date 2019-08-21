@@ -13,7 +13,7 @@
 
   varying highp vec2 vTextureCoord;
 
-  void main(void) {
+  void main() {
     vTextureCoord = (vec2(aPos.x + 1.0, 1.0 - aPos.y)) * 0.5;
 
     gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
@@ -26,7 +26,7 @@
 
   varying highp vec2 vTextureCoord;
 
-  void main(void) {
+  void main() {
     gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
   }
 </script>

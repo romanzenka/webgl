@@ -40,15 +40,16 @@
 
         <section>
             <h3>Mind shift</h3><br>
+            <h3>Architecture</h3><br>
             <h3>2D DataViz</h3><br>
             <h3>GPGPU</h3>
         </section>
         <section>
-            <h1>MIND  SHIFT</h1>
+            <h1>MIND SHIFT</h1>
         </section>
         <section>
             <p>Your target is human eye <span class="fragment fade-in" data-fragment-index="1">- <im>CHEAT</im></span></p>
-            <p>Your computer is inadequate <span class="fragment fade-in" data-fragment-index="2">- <im>GPU</im></span></p>
+            <p>Your silicon is inadequate <span class="fragment fade-in" data-fragment-index="2">- <im>GPU</im></span></p>
         </section>
         <section>
             First make it <span class="fragment fade-out">right, then make it</span> fast
@@ -67,57 +68,122 @@
             </table>
 
         </section>
-        <section>
-            The TU102 GPU includes <br>
-            six Graphics Processing Clusters (GPCs),<br>
-            36 Texture Processing Clusters (TPCs),<br>
-            and 72 Streaming Multiprocessors (SMs).<br>
-            <p>
-            Each GPC includes a dedicated raster engine,<br>
-                6 TPCs, with each TPC including 2 SMs.<br>
-                Each SM contains 64 CUDA Cores,<br>
-                8 Tensor Cores,<br>
-                a 256 KB register file,<br>
-                4 texture units,<br>
-                and 96 KB of L1/shared memory.
-        </section>
+
         <section>
             <span class="fragment fade-out" data-fragment-index="1"><im>4,608</im> CUDA</span> Cores<br>
             <span class="fragment fade-out" data-fragment-index="1"><im>72</im> Raytracing</span> Cores<br>
             <span class="fragment fade-out" data-fragment-index="1"><im>576</im> Tensor</span> Cores<br>
             <span class="fragment fade-out" data-fragment-index="1"><im>288</im> Texture Units<br></span>
+            <h3 class="fragment fade-in" data-fragment-index="2">Vastly different capabilities!</h3>
         </section>
-        <section data-background-iframe="01_init/index.html" data-background-interactive></section>
+
         <section>
-            <pre><code class="js">
-import React, { useState } from 'react';
-
-function Example() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-        </button>
-    </div>
-  );
-}
-</code></pre>
+            <h1>Architecture</h1>
         </section>
+
+        <section>
+            <h2>Everything is Triangles</h2>
+            <h2>Rendering Pipeline</h2>
+            <h2>Stateful API</h2>
+            <h2>Data Buffers</h2>
+            <h2>Shaders</h2>
+        </section>
+
+        <section>
+            <img src="img/mustang.jpg" class="stretch">
+            Everything is triangles...
+        </section>
+
+        <section>
+            <h2>Rendering Pipeline</h2>
+            From triangle to pixels
+        </section>
+
+        <section data-transition="fade-out">
+            <img src="img/vulkan_simplified_pipeline.svg" style="background-color: #ccd" class="stretch">
+        </section>
+        <section data-transition="fade-in">
+            <img src="img/vulkan_simplified_pipeline_2.svg" style="background-color: #ccd"  class="stretch">
+        </section>
+
+        <section>
+            <h3>Stateful API</h3>
+            <pre class="javascript"><code>gl = canvas.getContext("webgl");
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
+// Enable depth testing
+gl.enable(gl.DEPTH_TEST);
+// Near things obscure far things
+gl.depthFunc(gl.LEQUAL);
+// Clear the color as well as the depth buffer.
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+shaderProgram = gl.createProgram();
+gl.attachShader(shaderProgram, vertexShader);
+gl.attachShader(shaderProgram, fragmentShader);
+gl.linkProgram(shaderProgram);
+gl.useProgram(shaderProgram);</code></pre>
+        </section>
+
+        <section>
+            <h3>Data</h3>
+            <pre class="javascript"><code>
+squareVerticesBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+
+var vertices = [
+    1.0, 1.0,
+    -1.0, 1.0,
+    1.0, -1.0,
+    -1.0, -1.0
+];
+
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            </code></pre>
+        </section>
+
+        <section>
+            <h4 align="left">Vertex Shader</h4>
+
+            <pre class="glsl"><code>attribute vec2 aPos;
+
+uniform mat4 uMatrix;
+
+void main() {
+    gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
+}</code></pre>
+<br>
+            <h4 align="left">Fragment Shader</h4>
+
+<pre class="glsl"><code>void main() {
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+}</code></pre>
+
+        </section>
+
+        <section data-background-iframe="01_init/index.html" data-background-interactive></section>
+        <section data-background-iframe="02_circle/index.html" data-background-interactive></section>
+        <section data-background-iframe="03_texture/index.html" data-background-interactive></section>
+        <section data-background-iframe="04_scatter/index.html" data-background-interactive></section>
+        <section data-background-iframe="05_animate/index.html" data-background-interactive></section>
+        <section data-background-iframe="06_angle/index.html" data-background-interactive></section>
+        <section data-background-iframe="07_scatter2/index.html" data-background-interactive></section>
+        <section data-background-iframe="08_multiVariable/index.html" data-background-interactive></section>
+        <section data-background-iframe="09_smoothTransition/index.html" data-background-interactive></section>
 
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.min.js"></script>
 <script>
   Reveal.initialize({
+    controls: false,
     transition: 'none',
     margin: 0.01,
     dependencies: [
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.min.js', async: true },
     ]
   });
+
+  Reveal.slide( 20 );
 </script>
 </body>
 </html>

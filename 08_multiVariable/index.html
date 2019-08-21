@@ -38,7 +38,7 @@
   varying vec2 vTexCoord;
   varying vec3 vColor;
 
-  void main(void) {
+  void main() {
     // Rotation matrix
     float angle = aAngle + uTime;
     float sa = sin(angle);
@@ -75,10 +75,10 @@
   varying vec2 vTexCoord;
   varying vec3 vColor;
 
-  void main(void) {
+  void main() {
     float r = length(vTexCoord);
     float rr = exp2(10.0 * log2(r));
-    
+
     if (rr>1.0) {
         discard;
     }

@@ -43,7 +43,7 @@
   varying vec2 vTexCoord;
   varying vec3 vColor;
 
-  void main(void) {
+  void main() {
     // Rotation matrix
     float angle = mix(aAngle1, aAngle2, uMix) + uTime;
     float sa = sin(angle);
@@ -85,7 +85,7 @@
   varying vec2 vTexCoord;
   varying vec3 vColor;
 
-  void main(void) {
+  void main() {
     float r = length(vTexCoord);
     float rr = r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r;
 

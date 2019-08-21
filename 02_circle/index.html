@@ -13,7 +13,7 @@
 
   varying vec2 vTexCoord;
 
-  void main(void) {
+  void main() {
     gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
 
     vTexCoord = aPos;
@@ -26,7 +26,7 @@
 
   varying vec2 vTexCoord;
 
-  void main(void) {
+  void main() {
     float r = length(vTexCoord);
 
     if (r>1.0) {

@@ -9,7 +9,7 @@
 
   uniform mat4 uMatrix;
 
-  void main(void) {
+  void main() {
     gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
   }
 
@@ -17,7 +17,7 @@
 
 <script id="shader-fs" type="x-shader/x-fragment">
 
-  void main(void) {
+  void main() {
     gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
   }
 

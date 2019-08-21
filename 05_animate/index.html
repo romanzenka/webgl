@@ -1,10 +1,5 @@
 <html>
 <head><title>Animate a scatterplot</title></head>
-<style>
-    body {
-        background: black;
-    }
-</style>
 <body>
 
 <canvas id="webGlCanvas" width="600" height="600" style="width: 600px; height: 600px;">
@@ -21,7 +16,7 @@
 
   varying vec2 vTexCoord;
 
-  void main(void) {
+  void main() {
     gl_Position = uMatrix * vec4(aX+uSize*aPos.x, aY+uSize*aPos.y, 0.0, 1.0);
 
     vTexCoord = aPos;
@@ -33,7 +28,7 @@
 
   varying vec2 vTexCoord;
 
-  void main(void) {
+  void main() {
     float r = length(vTexCoord);
 
     if (r>1.0) {
@@ -66,6 +61,8 @@
             }
         }
 
+        min -= 0.1;
+        max += 0.1;
         for (i = 0; i < data.length; i++) {
             data[i] = 2 * (data[i] - min) / (max - min) - 1;
         }
