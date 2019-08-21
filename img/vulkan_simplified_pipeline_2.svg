@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="svg2" inkscape:version="0.91 r13725" sodipodi:docname="vulkan_simplified_pipeline.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 403 643"
+	 style="enable-background:new 0 0 403 643;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st1{stroke:#000000;stroke-miterlimit:10;}
+	.st2{fill:url(#rect22_1_);stroke:#82B366;}
+	.st3{font-family:'Helvetica';}
+	.st4{font-size:12px;}
+	.st5{fill:url(#rect34_1_);stroke:#D79B00;}
+	.st6{fill:url(#rect70_1_);stroke:#82B366;}
+	.st7{fill:url(#rect82_1_);stroke:#D79B00;}
+	.st8{fill:url(#rect94_1_);stroke:#82B366;}
+	.st9{fill:#FFFFFF;stroke:#000000;stroke-width:0.7931;}
+	.st10{fill:none;stroke:#000000;stroke-width:0.7931;}
+	.st11{font-size:9.9141px;}
+	.st12{fill:none;stroke:#000000;}
+	.st13{stroke:#000000;stroke-width:0.5;}
+	.st14{stroke:#000000;}
+	.st15{fill:#FF2A2A;}
+	.st16{fill:#FF0000;}
+	.st17{fill:#D40000;}
+	.st18{fill:#AA0000;}
+	.st19{fill:#800000;}
+	.st20{fill:#550000;}
+	.st21{fill:#2B0000;}
+</style>
+<sodipodi:namedview  bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" id="namedview118" inkscape:current-layer="g48" inkscape:cx="59.281782" inkscape:cy="383.33491" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-height="1377" inkscape:window-maximized="1" inkscape:window-width="2560" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:zoom="2.0762327" objecttolerance="10" pagecolor="#ffffff" showgrid="false">
+	</sodipodi:namedview>
+<path id="path18" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M101.5,101.5v33.6"/>
+<path id="path20" pointer-events="none" inkscape:connector-curvature="0" class="st1" d="M101.5,140.4l-3.5-7l3.5,1.8l3.5-1.8
+	L101.5,140.4z"/>
+<linearGradient id="rect22_1_" gradientUnits="userSpaceOnUse" x1="36.6437" y1="624.062" x2="36.6437" y2="553.6276" gradientTransform="matrix(1.7179 0 0 -0.5821 38.5493 424.2679)">
+	<stop  offset="0" style="stop-color:#D5E8D4"/>
+	<stop  offset="1" style="stop-color:#97D077"/>
+</linearGradient>
+<rect id="rect22" x="41.5" y="61.5" pointer-events="none" class="st2" width="120" height="40"/>
+<g id="g24" transform="translate(57.5,74.5)">
+	<text id="text28" transform="matrix(1 0 0 1 1.8115 12.5)" class="st3 st4">Input assembler</text>
+</g>
+<linearGradient id="rect34_1_" gradientUnits="userSpaceOnUse" x1="36.6437" y1="486.6291" x2="36.6437" y2="416.1947" gradientTransform="matrix(1.7179 0 0 -0.5821 38.5493 424.2679)">
+	<stop  offset="0" style="stop-color:#FFCD28"/>
+	<stop  offset="1" style="stop-color:#FFA500"/>
+</linearGradient>
+<rect id="rect34" x="41.5" y="141.5" pointer-events="none" class="st5" width="120" height="40"/>
+<g id="g36" transform="translate(63.5,154.5)">
+	<text id="text40" transform="matrix(1 0 0 1 1.4746 12.5)" class="st3 st4">Vertex shader</text>
+</g>
+<path id="path54" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M101.5,182v193.1"/>
+<path id="path56" pointer-events="none" inkscape:connector-curvature="0" class="st1" d="M101.5,380.4l-3.5-7l3.5,1.8l3.5-1.8
+	L101.5,380.4z"/>
+<path id="path66" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M101.5,421.5v33.6"/>
+<path id="path68" pointer-events="none" inkscape:connector-curvature="0" class="st1" d="M101.5,460.4l-3.5-7l3.5,1.8l3.5-1.8
+	L101.5,460.4z"/>
+<linearGradient id="rect70_1_" gradientUnits="userSpaceOnUse" x1="36.6437" y1="74.3304" x2="36.6437" y2="3.896" gradientTransform="matrix(1.7179 0 0 -0.5821 38.5493 424.2679)">
+	<stop  offset="0" style="stop-color:#D5E8D4"/>
+	<stop  offset="1" style="stop-color:#97D077"/>
+</linearGradient>
+<rect id="rect70" x="41.5" y="381.5" pointer-events="none" class="st6" width="120" height="40"/>
+<g id="g72" transform="translate(64.5,394.5)">
+	<text id="text76" transform="matrix(1 0 0 1 1.4844 12.5)" class="st3 st4">Rasterization</text>
+</g>
+<path id="path78" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M101.8,501.5v20.2v13.4"/>
+<path id="path80" pointer-events="none" inkscape:connector-curvature="0" class="st1" d="M101.8,540.4l-3.5-7l3.5,1.8l3.5-1.8
+	L101.8,540.4z"/>
+<linearGradient id="rect82_1_" gradientUnits="userSpaceOnUse" x1="36.6437" y1="-63.1026" x2="36.6437" y2="-133.5369" gradientTransform="matrix(1.7179 0 0 -0.5821 38.5493 424.2679)">
+	<stop  offset="0" style="stop-color:#FFCD28"/>
+	<stop  offset="1" style="stop-color:#FFA500"/>
+</linearGradient>
+<rect id="rect82" x="41.5" y="461.5" pointer-events="none" class="st7" width="120" height="40"/>
+<g id="g84" transform="translate(54.5,474.5)">
+	<text id="text88" transform="matrix(1 0 0 1 1.8115 12.5)" class="st3 st4">Fragment shader</text>
+</g>
+<path id="path90" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M101.8,581.7v33.6"/>
+<path id="path92" pointer-events="none" inkscape:connector-curvature="0" class="st1" d="M101.8,620.6l-3.5-7l3.5,1.8l3.5-1.8
+	L101.8,620.6z"/>
+<linearGradient id="rect94_1_" gradientUnits="userSpaceOnUse" x1="36.6437" y1="-200.5355" x2="36.6437" y2="-270.9698" gradientTransform="matrix(1.7179 0 0 -0.5821 38.5493 424.2679)">
+	<stop  offset="0" style="stop-color:#D5E8D4"/>
+	<stop  offset="1" style="stop-color:#97D077"/>
+</linearGradient>
+<rect id="rect94" x="41.5" y="541.5" pointer-events="none" class="st8" width="120" height="40"/>
+<g id="g96" transform="translate(60.5,554.5)">
+	<text id="text100" transform="matrix(1 0 0 1 2.8076 12.5)" class="st3 st4">Color blending</text>
+</g>
+<path id="path102" pointer-events="none" inkscape:connector-curvature="0" class="st0" d="M101.8,21.7v33.6"/>
+<path id="path104" pointer-events="none" inkscape:connector-curvature="0" class="st1" d="M101.8,60.6l-3.5-7l3.5,1.8l3.5-1.8
+	L101.8,60.6z"/>
+<g id="g106" transform="translate(50.5,4.5)">
+	<text id="text110" transform="matrix(1 0 0 1 1.5723 12.5)" class="st3 st4">Vertex/index buffer</text>
+</g>
+<g id="g112" transform="translate(68.5,624.5)">
+	<text id="text116" transform="matrix(1 0 0 1 0.9277 12.5)" class="st3 st4">Framebuffer</text>
+</g>
+<rect id="rect3464" x="200.9" y="46.6" class="st9" width="67.5" height="67.5"/>
+<circle id="path3466" cx="220.3" cy="93.6" r="1.6"/>
+<circle id="path3466-2" cx="252.2" cy="93.3" r="1.6"/>
+<circle id="path3466-4" cx="236.3" cy="67.9" r="1.6"/>
+<path id="path3493" inkscape:connector-curvature="0" class="st10" d="M236.3,68l-15.9,25.7"/>
+<path id="path3499" inkscape:connector-curvature="0" class="st10" d="M220.4,93.7l31.9-0.4"/>
+<path id="path3501" inkscape:connector-curvature="0" class="st10" d="M236.4,68l15.9,25.4"/>
+<text transform="matrix(1 0 0 1 233.051 63.6205)" class="st3 st11">0</text>
+<text transform="matrix(1 0 0 1 215.6699 104.1128)" class="st3 st11">1</text>
+<text transform="matrix(1 0 0 1 251.1961 103.9218)" class="st3 st11">2</text>
+<rect id="rect3464-1" x="200.4" y="125.4" class="st9" width="67.5" height="67.5"/>
+<circle id="path3466-0" cx="216.3" cy="164.5" r="1.6"/>
+<circle id="path3466-2-1" cx="244.9" cy="174.1" r="1.6"/>
+<circle id="path3466-4-7" cx="243.5" cy="146.8" r="1.6"/>
+<text transform="matrix(1 0 0 1 237.6054 142.4366)" class="st3 st11">0</text>
+<text transform="matrix(1 0 0 1 211.6752 174.9818)" class="st3 st11">1</text>
+<text transform="matrix(1 0 0 1 247.4422 181.6541)" class="st3 st11">2</text>
+<path id="path3617" inkscape:connector-curvature="0" class="st12" d="M216.4,164.5l27.1-17.7"/>
+<path id="path3619" inkscape:connector-curvature="0" class="st12" d="M244.9,174.2l-1.4-27.5"/>
+<path id="path3621" inkscape:connector-curvature="0" class="st12" d="M216.4,164.6l28.7,9.6"/>
+<rect id="rect3464-1-2-5-5" x="199.8" y="366" class="st9" width="67.5" height="67.5"/>
+<path id="path4490-8-1" inkscape:connector-curvature="0" class="st13" d="M242.4,388.1l-11,22.4"/>
+<path id="path4654" inkscape:connector-curvature="0" class="st14" d="M205.3,366.2v67.1"/>
+<path id="path4654-1" inkscape:connector-curvature="0" class="st14" d="M210.7,366.3v67.1"/>
+<path id="path4654-7" inkscape:connector-curvature="0" class="st14" d="M216.6,366.4v67.1"/>
+<path id="path4654-6" inkscape:connector-curvature="0" class="st14" d="M222.3,366.1v67.1"/>
+<path id="path4654-9" inkscape:connector-curvature="0" class="st14" d="M228.6,366.2v67.1"/>
+<path id="path4654-96" inkscape:connector-curvature="0" class="st14" d="M234.6,366.2v67.1"/>
+<path id="path4654-7-4" inkscape:connector-curvature="0" class="st14" d="M240.8,366.2v67.1"/>
+<path id="path4654-6-8" inkscape:connector-curvature="0" class="st14" d="M247.1,366.2v67.1"/>
+<path id="path4654-9-7" inkscape:connector-curvature="0" class="st14" d="M253.6,366.1v67.1"/>
+<path id="path4654-96-2" inkscape:connector-curvature="0" class="st14" d="M260.8,366.1v67.1"/>
+<path id="path4654-65" inkscape:connector-curvature="0" class="st14" d="M267.1,371.7H200"/>
+<path id="path4654-1-9" inkscape:connector-curvature="0" class="st14" d="M267.1,377.1H200"/>
+<path id="path4654-7-6" inkscape:connector-curvature="0" class="st14" d="M267,383h-67.1"/>
+<path id="path4654-6-6" inkscape:connector-curvature="0" class="st14" d="M267.2,388.7h-67.1"/>
+<path id="path4654-9-8" inkscape:connector-curvature="0" class="st14" d="M267.1,395H200"/>
+<path id="path4654-96-6" inkscape:connector-curvature="0" class="st14" d="M267.1,400.9H200"/>
+<path id="path4654-7-4-2" inkscape:connector-curvature="0" class="st14" d="M267.2,407.2h-67.1"/>
+<path id="path4654-6-8-6" inkscape:connector-curvature="0" class="st14" d="M267.2,413.5h-67.1"/>
+<path id="path4654-9-7-0" inkscape:connector-curvature="0" class="st14" d="M267.3,420h-67.1"/>
+<path id="path4654-96-2-8" inkscape:connector-curvature="0" class="st14" d="M267.3,427.2h-67.1"/>
+<rect id="rect4785" x="216.6" y="401.2" class="st14" width="5.6" height="5.8"/>
+<rect id="rect4787" x="222.3" y="407.2" class="st14" width="6" height="6.2"/>
+<rect id="rect4789" x="228.3" y="407.4" class="st14" width="6.1" height="5.9"/>
+<rect id="rect4791" x="234.7" y="407.2" class="st14" width="5.3" height="6.1"/>
+<rect id="rect4793" x="240.8" y="407.3" class="st14" width="6" height="6.1"/>
+<rect id="rect4795" x="247.1" y="401.2" class="st14" width="6.5" height="5.8"/>
+<rect id="rect4797" x="253.7" y="394.8" class="st14" width="6.9" height="5.8"/>
+<rect id="rect4799" x="253.6" y="388.9" class="st14" width="7" height="5.5"/>
+<rect id="rect4801" x="247.1" y="388.8" class="st14" width="6.5" height="6.1"/>
+<rect id="rect4803" x="247" y="395.4" class="st14" width="6.7" height="5.8"/>
+<rect id="rect4805" x="240.8" y="388.6" class="st14" width="6.1" height="5.8"/>
+<rect id="rect4807" x="240.8" y="395.1" class="st14" width="6.4" height="5.7"/>
+<rect id="rect4809" x="240.8" y="401" class="st14" width="6.2" height="6.2"/>
+<rect id="rect4811" x="234.5" y="401.1" class="st14" width="6.4" height="6"/>
+<rect id="rect4813" x="228.5" y="401.2" class="st14" width="5.5" height="5.5"/>
+<rect id="rect4815" x="222.4" y="401" class="st14" width="6.2" height="6.2"/>
+<rect id="rect4817" x="228.6" y="395" class="st14" width="5.6" height="6.1"/>
+<rect id="rect4819" x="234.2" y="395.1" class="st14" width="6.3" height="5.5"/>
+<rect id="rect4821" x="234.7" y="388.8" class="st14" width="6" height="6.6"/>
+<rect id="rect4823" x="222.3" y="395" class="st14" width="5.7" height="5.5"/>
+<g id="layer3" inkscape:groupmode="layer" inkscape:label="BGG">
+	<rect id="rect5462" x="199.1" y="525" width="67.8" height="67.8"/>
+</g>
+<g id="layer1" inkscape:groupmode="layer" inkscape:label="BG">
+	<rect id="rect4785-3" x="216.9" y="478.9" class="st15" width="5.6" height="5.8"/>
+	<rect id="rect4787-7" x="222.6" y="485" class="st16" width="6" height="6.2"/>
+	<rect id="rect4789-7" x="228.6" y="485.2" class="st17" width="6.1" height="5.9"/>
+	<rect id="rect4791-9" x="234.8" y="485" class="st18" width="5.5" height="6.1"/>
+	<rect id="rect4793-1" x="241.1" y="485.1" class="st19" width="6" height="6.1"/>
+	<rect id="rect4795-4" x="247.4" y="478.9" class="st20" width="6.5" height="5.8"/>
+	<rect id="rect4797-8" x="254" y="472.6" class="st21" width="6.9" height="5.8"/>
+	<rect id="rect4799-5" x="253.9" y="466.7" class="st21" width="7" height="5.5"/>
+	<rect id="rect4801-7" x="247.4" y="466.6" class="st20" width="6.5" height="6.1"/>
+	<rect id="rect4803-7" x="247.3" y="472.7" class="st20" width="6.7" height="6.3"/>
+	<rect id="rect4805-4" x="241.1" y="466.4" class="st19" width="6.1" height="5.8"/>
+	<rect id="rect4807-0" x="241.1" y="472.9" class="st19" width="6.4" height="5.7"/>
+	<rect id="rect4809-8" x="241.1" y="478.8" class="st19" width="6.2" height="6.2"/>
+	<rect id="rect4811-8" x="234.8" y="478.9" class="st18" width="6.4" height="6"/>
+	<rect id="rect4813-9" x="228.8" y="478.9" class="st17" width="5.5" height="5.5"/>
+	<rect id="rect4815-6" x="222.7" y="478.8" class="st16" width="6.2" height="6.2"/>
+	<rect id="rect4817-7" x="228.9" y="472.7" class="st17" width="5.6" height="6.1"/>
+	<rect id="rect4819-4" x="234.5" y="472.9" class="st18" width="6.3" height="5.5"/>
+	<rect id="rect4821-0" x="234.7" y="466.6" class="st18" width="6.4" height="6.6"/>
+	<rect id="rect4823-6" x="222.6" y="472.8" class="st16" width="5.7" height="5.5"/>
+</g>
+<g id="layer2" inkscape:groupmode="layer" inkscape:label="FG">
+	<g id="g5143" transform="translate(-68.874747,-3.01026)">
+		<rect id="rect3464-1-2-5-5-0" x="268.6" y="446.7" class="st10" width="67.5" height="67.5"/>
+		<path id="path4654-94" inkscape:connector-curvature="0" class="st14" d="M274.2,446.9V514"/>
+		<path id="path4654-1-8" inkscape:connector-curvature="0" class="st14" d="M279.6,447V514"/>
+		<path id="path4654-7-8" inkscape:connector-curvature="0" class="st14" d="M285.4,447v67.1"/>
+		<path id="path4654-6-7" inkscape:connector-curvature="0" class="st14" d="M291.1,446.8v67.1"/>
+		<path id="path4654-9-3" inkscape:connector-curvature="0" class="st14" d="M297.4,446.9V514"/>
+		<path id="path4654-96-5" inkscape:connector-curvature="0" class="st14" d="M303.4,446.9V514"/>
+		<path id="path4654-7-4-9" inkscape:connector-curvature="0" class="st14" d="M309.6,446.9v67.1"/>
+		<path id="path4654-6-8-68" inkscape:connector-curvature="0" class="st14" d="M315.9,446.9v67.1"/>
+		<path id="path4654-9-7-02" inkscape:connector-curvature="0" class="st14" d="M322.4,446.7v67.1"/>
+		<path id="path4654-96-2-1" inkscape:connector-curvature="0" class="st14" d="M329.7,446.7v67.1"/>
+		<path id="path4654-65-8" inkscape:connector-curvature="0" class="st14" d="M335.9,452.4h-67.1"/>
+		<path id="path4654-1-9-5" inkscape:connector-curvature="0" class="st14" d="M335.9,457.8h-67.1"/>
+		<path id="path4654-7-6-8" inkscape:connector-curvature="0" class="st14" d="M335.8,463.7h-67.1"/>
+		<path id="path4654-6-6-0" inkscape:connector-curvature="0" class="st14" d="M336,469.3H269"/>
+		<path id="path4654-9-8-0" inkscape:connector-curvature="0" class="st14" d="M335.9,475.7h-67.1"/>
+		<path id="path4654-96-6-6" inkscape:connector-curvature="0" class="st14" d="M335.9,481.6h-67.1"/>
+		<path id="path4654-7-4-2-6" inkscape:connector-curvature="0" class="st14" d="M336,487.8h-67.1"/>
+		<path id="path4654-6-8-6-4" inkscape:connector-curvature="0" class="st14" d="M336,494.2h-67.1"/>
+		<path id="path4654-9-7-0-4" inkscape:connector-curvature="0" class="st14" d="M336.1,500.7H269"/>
+		<path id="path4654-96-2-8-4" inkscape:connector-curvature="0" class="st14" d="M336.1,507.9H269"/>
+	</g>
+	<rect id="rect4785-3-3" x="216.5" y="560.5" class="st15" width="5.8" height="6.1"/>
+	<rect id="rect4787-7-6" x="222.2" y="566.5" class="st16" width="6.3" height="6.4"/>
+	<rect id="rect4789-7-8" x="228.4" y="566.8" class="st17" width="5.8" height="5.9"/>
+	<rect id="rect4791-9-2" x="234.2" y="566.6" class="st18" width="6.5" height="6.1"/>
+	<rect id="rect4793-1-1" x="240.7" y="566.7" class="st19" width="6.2" height="6"/>
+	<rect id="rect4795-4-5" x="247" y="560.6" class="st20" width="6.5" height="5.8"/>
+	<rect id="rect4797-8-4" x="253.5" y="554.3" class="st21" width="7.1" height="5.8"/>
+	<rect id="rect4799-5-0" x="253.5" y="548.3" class="st21" width="7.1" height="6"/>
+	<rect id="rect4801-7-8" x="247" y="548.2" class="st20" width="6.5" height="6.3"/>
+	<rect id="rect4803-7-9" x="246.8" y="554.4" class="st20" width="6.7" height="6.3"/>
+	<rect id="rect4805-4-3" x="240.6" y="548.2" class="st19" width="6.3" height="6.1"/>
+	<rect id="rect4807-0-7" x="240.6" y="554.3" class="st19" width="6.4" height="6.3"/>
+	<rect id="rect4809-8-5" x="240.6" y="560.5" class="st19" width="6.4" height="6.3"/>
+	<rect id="rect4811-8-5" x="234.2" y="560.5" class="st18" width="6.5" height="6.1"/>
+	<rect id="rect4813-9-8" x="228.4" y="560.6" class="st17" width="5.8" height="6.3"/>
+	<rect id="rect4815-6-3" x="222.2" y="560.5" class="st16" width="6.2" height="6.2"/>
+	<rect id="rect4817-7-5" x="228.5" y="554.4" class="st17" width="5.7" height="6.2"/>
+	<rect id="rect4819-4-4" x="234.2" y="554.4" class="st18" width="6.4" height="6.2"/>
+	<rect id="rect4821-0-5" x="234.3" y="548.2" class="st18" width="6.4" height="6.1"/>
+	<rect id="rect4823-6-3" x="222.2" y="554.4" class="st16" width="6.3" height="6.1"/>
+</g>
+</svg>
