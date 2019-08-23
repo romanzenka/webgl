@@ -70,8 +70,6 @@
 <script id="shader-fs" type="x-shader/x-fragment">
   precision mediump float;
 
-  uniform sampler2D uSampler;
-
   varying vec2 vTexCoord;
   varying vec3 vColor;
 
@@ -83,7 +81,6 @@
         discard;
     }
 
-    // gl_FragColor = texture2D(uSampler, vTexCoord) * vec4(vColor, 1.0);
     gl_FragColor = vec4(vColor, 1.0-rr);
   }
 
@@ -153,7 +150,7 @@
                              '"' +
                              ");'>" +
                              varName +
-                             "</td></tr>");
+                             "</td><td id='setting_"+varName+"'>"+bufferAssignment[varName]+"</td></tr>");
         }
 
         document.writeln("</table>");
@@ -308,34 +305,6 @@
         gl.bufferData(gl.ARRAY_BUFFER, allVertices, gl.STATIC_DRAW);
     }
 
-    function handleTextureLoaded(image, texture) {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-        gl.generateMipmap(gl.TEXTURE_2D);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-
-        // Set texture
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        var samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-        gl.uniform1i(samplerUniform, 0);
-
-        requestAnimationFrame(drawAll);
-    }
-
-    function initTextures() {
-        texture = gl.createTexture();
-        image = new Image();
-        image.onload = function () {
-            handleTextureLoaded(image, texture);
-        };
-        image.src = "zebra.png";
-    }
-
     bufferAssignment = {
         x: 0,
         y: 1,
@@ -373,7 +342,6 @@
 
     initShaders();
     initBuffers();
-    initTextures();
     bindAttributes();
     ui();
 
@@ -381,6 +349,7 @@
         if (e.keyCode >= 48 && e.keyCode < 58) {
             if (currentVarName != "") {
                 bufferAssignment[currentVarName] = e.keyCode - 48;
+                document.getElementById("setting_"+currentVarName).innerText = e.keyCode - 48;
             }
         }
         if(e.keyCode == 82) {
@@ -422,6 +391,8 @@
 
         requestAnimationFrame(drawAll);
     }
+
+    requestAnimationFrame(drawAll);
 </script>
 
 </body>

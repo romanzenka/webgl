@@ -7,6 +7,11 @@
         table.hljs-ln {
             font-size: 20px;
         }
+        .smallCode code {
+            font-size: 14px;
+            line-height: 16px;
+        }
+
         im { color: white }
     </style>
 </head>
@@ -24,12 +29,15 @@
             <h2>Better Tutorials</h2>
             <a href="https://webglfundamentals.org/">webglfundamentals.org</a><br>
             <a href="https://khronos.org/webgl">khronos.org / webgl</a>
+            <a href="https://thebookofshaders.com/">The Book of Shaders</a>
+            <a href="http://www.graphicsgems.org/">Graphics Gems</a>
         </section>
         <section>
             <h2>Better Demos</h2>
             <a href="https://mrdoob.com/">mrdoob.com</a><br>
             <a href="https://www.shadertoy.com/">shadertoy.com</a><br>
             <a href="https://threejs.org/">threejs.org</a>
+            <a href="http://stack.gl/#examples">Stack.gl Examples</a>
         </section>
         <section>
             <h2><span class="fragment fade-out">Better</span> Libraries</h2>
@@ -49,7 +57,7 @@
         </section>
         <section>
             <p>Your target is human eye <span class="fragment fade-in" data-fragment-index="1">- <im>CHEAT</im></span></p>
-            <p>Your silicon is inadequate <span class="fragment fade-in" data-fragment-index="2">- <im>GPU</im></span></p>
+            <p>Your hardware is inadequate <span class="fragment fade-in" data-fragment-index="2">- <im>GPU</im></span></p>
         </section>
         <section>
             First make it <span class="fragment fade-out">right, then make it</span> fast
@@ -82,14 +90,6 @@
         </section>
 
         <section>
-            <h2>Everything is Triangles</h2>
-            <h2>Rendering Pipeline</h2>
-            <h2>Stateful API</h2>
-            <h2>Data Buffers</h2>
-            <h2>Shaders</h2>
-        </section>
-
-        <section>
             <img src="img/mustang.jpg" class="stretch">
             Everything is triangles...
         </section>
@@ -107,25 +107,7 @@
         </section>
 
         <section>
-            <h3>Stateful API</h3>
-            <pre class="javascript"><code>gl = canvas.getContext("webgl");
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
-// Enable depth testing
-gl.enable(gl.DEPTH_TEST);
-// Near things obscure far things
-gl.depthFunc(gl.LEQUAL);
-// Clear the color as well as the depth buffer.
-gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-shaderProgram = gl.createProgram();
-gl.attachShader(shaderProgram, vertexShader);
-gl.attachShader(shaderProgram, fragmentShader);
-gl.linkProgram(shaderProgram);
-gl.useProgram(shaderProgram);</code></pre>
-        </section>
-
-        <section>
-            <h3>Data</h3>
+            <h3>Vertex Buffer</h3>
             <pre class="javascript"><code>
 squareVerticesBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
@@ -137,38 +119,287 @@ var vertices = [
     -1.0, -1.0
 ];
 
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+gl.bufferData(gl.ARRAY_BUFFER,
+                new Float32Array(vertices),
+                gl.STATIC_DRAW);
             </code></pre>
         </section>
 
         <section>
             <h4 align="left">Vertex Shader</h4>
 
-            <pre class="glsl"><code>attribute vec2 aPos;
+            <pre class="glsl"><code>   attribute vec2 aPos;     // Input
 
-uniform mat4 uMatrix;
+   uniform mat4 uMatrix;    // Constant for all invocations
+
+   varying vec4 vColor;     // Output
+// varying vec4 gl_Position // Predefined standard output
 
 void main() {
     gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
+    vColor = vec4(1.0, 1.0, 1.0, 1.0);
 }</code></pre>
-<br>
-            <h4 align="left">Fragment Shader</h4>
-
-<pre class="glsl"><code>void main() {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-}</code></pre>
-
         </section>
 
-        <section data-background-iframe="01_init/index.html" data-background-interactive></section>
-        <section data-background-iframe="02_circle/index.html" data-background-interactive></section>
-        <section data-background-iframe="03_texture/index.html" data-background-interactive></section>
-        <section data-background-iframe="04_scatter/index.html" data-background-interactive></section>
-        <section data-background-iframe="05_animate/index.html" data-background-interactive></section>
-        <section data-background-iframe="06_angle/index.html" data-background-interactive></section>
-        <section data-background-iframe="07_scatter2/index.html" data-background-interactive></section>
-        <section data-background-iframe="08_multiVariable/index.html" data-background-interactive></section>
-        <section data-background-iframe="09_smoothTransition/index.html" data-background-interactive></section>
+        <section>
+            <h4 align="left">Fragment Shader</h4>
+
+            <pre class="glsl"><code>varying vec4 vColor;
+
+void main() {
+    gl_FragColor = vColor;
+}</code></pre>
+        </section>
+
+        <section>
+            <h3>Rasterization</h3>
+            <img src="https://s3.amazonaws.com/media-p.slid.es/uploads/358470/images/1606501/fragment-shader.gif" class="stretch">
+        </section>
+
+        <section>
+            <h3>Stateful API</h3>
+            <div align="left">
+                not object oriented<br>
+                not functional<br>
+                no garbage collector<br>
+                objects live on a different device - opaque handles<br>
+                huge amount of parameters to tweak<br>
+            </div>
+            <br>
+            <div class="fragment fade-in" data-fragment-index="1" align="left">
+                <im>
+                    <i>Real Programmers use <span class="fragment fade-out" data-fragment-index="2">FORTRAN,</span><span class="fragment fade-in" data-fragment-index="2">state,</span><br>
+                        Quiche Eaters use <span class="fragment fade-out" data-fragment-index="2">PASCAL.</span><span class="fragment fade-in" data-fragment-index="2">functional programming.</span></i>
+                </im>
+            </div>
+        </section>
+
+        <section>
+            <h1>DataViz</h1>
+
+            Map data to position / color / size / etc...<br>
+            Draw it, fast.
+        </section>
+
+        <section> <!--------------------------------------------------------- 1 ---->
+            <a href="01_init/index.html" target="01">01_init</a>
+            <h4 align="left">Vertex Shader</h4>
+            <pre class="glsl smallCode"><code>  attribute vec2 aPos;
+
+  uniform mat4 uMatrix;
+
+  void main() {
+    gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
+  }</code></pre>
+            <br>
+            <h4 align="left">Fragment Shader</h4>
+            <pre class="glsl smallCode"><code>  void main() {
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+  }</code></pre>
+        </section>
+        <section> <!--------------------------------------------------------- 2 ---->
+            <a href="02_circle/index.html" target="02">02_circle</a>
+            <h4 align="left">Vertex Shader</h4>
+            <pre class="glsl smallCode"><code>  attribute vec2 aPos;
+
+  uniform mat4 uMatrix;
+
+  varying vec2 vTexCoord;
+
+  void main() {
+    gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
+
+    vTexCoord = aPos;
+  }</code></pre>
+            <br>
+            <h4 align="left">Fragment Shader</h4>
+            <pre class="glsl smallCode"><code>  precision mediump float;
+
+  varying vec2 vTexCoord;
+
+  void main() {
+    float r = length(vTexCoord);
+
+    if (r>1.0) {
+        discard;
+    }
+
+    gl_FragColor = vec4((vTexCoord.x + 1.0)/2.0, (vTexCoord.y + 1.0)/2.0, 0.0, 1.0);
+  }</code></pre>
+            </section>
+        </section>
+        <section> <!--------------------------------------------------------- 3 ---->
+            <a href="03_texture/index.html" target="03">03_texture</a>
+            <h4 align="left">Vertex Shader</h4>
+            <pre class="glsl smallCode"><code>  attribute vec2 aPos;
+  uniform mat4 uMatrix;
+  varying highp vec2 vTextureCoord;
+
+  void main() {
+    vTextureCoord = (vec2(aPos.x + 1.0, 1.0 - aPos.y)) * 0.5;
+    gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
+  }
+</code></pre>
+            <br>
+            <h4 align="left">Fragment Shader</h4>
+            <pre class="glsl smallCode"><code>  uniform sampler2D uSampler;
+  varying highp vec2 vTextureCoord;
+
+  void main() {
+    gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+  }</code></pre>
+        </section>
+        <section>  <!--------------------------------------------------------- 4 ---->
+            <a href="04_scatter/index.html" target="04">04_scatter</a>
+            <h4 align="left">Fragment Shader</h4>
+            <pre class="glsl smallCode"><code>  precision mediump float;
+  varying vec2 vTexCoord;
+
+  void main() {
+    float r = length(vTexCoord);
+
+    if (r>1.0) {
+      discard;
+    }
+
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0 - r);
+  }</code></pre>
+        </section>
+        <section>  <!--------------------------------------------------------- 5 ---->
+            <a href="05_animate/index.html" target="05">05_animate</a>
+            <h4 align="left">Vertex Shader</h4>
+            <pre class="glsl smallCode"><code>  attribute float aX;
+  attribute float aY;
+  attribute vec2 aPos;
+
+  uniform mat4 uMatrix;
+  uniform float uSize;
+
+  varying vec2 vTexCoord;
+
+  void main() {
+    gl_Position = uMatrix * vec4(aX+uSize*aPos.x, aY+uSize*aPos.y, 0.0, 1.0);
+
+    vTexCoord = aPos;
+  }</code></pre>
+        </section>
+        <section>  <!--------------------------------------------------------- 6 ---->
+            <a href="06_angle/index.html" target="06">06_angle</a><br>
+            Almost Native Graphics Layer Engine<br>
+            <br>
+            Instanced geometry - reuse triangle mesh with different parameters.
+            <pre><code>ext = gl.getExtension("ANGLE_instanced_arrays");
+
+ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
+
+        </section>
+        <section>  <!--------------------------------------------------------- 7 ---->
+            <a href="07_scatter2/index.html" target="07">07_scatter2</a><br>
+            Scatterplot + texture
+        </section>
+        <section>  <!--------------------------------------------------------- 8 ---->
+            <a href="08_multiVariable/index.html" target="08">08_multiVariable</a><br>
+            <pre class="smallCode"><code>  attribute vec2 aPos; // Texture coords
+
+  attribute float aX; attribute float aY;
+  attribute float aWidth; attribute float aHeight;
+  attribute float aAngle;
+  attribute float aRed; attribute float aGreen; attribute float aBlue;
+
+  uniform mat4 uMatrix; // Transform matrix
+  uniform float uSize; // Global size scale
+
+  varying vec2 vTexCoord;
+  varying vec3 vColor;
+
+  void main() {
+    // Rotation matrix
+    float angle = aAngle + uTime;
+    float sa = sin(angle);
+    float ca = cos(angle);
+
+    mat2 rot = mat2(
+        ca,  sa,
+        -sa, ca
+    );
+
+    // Scaling matrix
+    mat2 scale = mat2(
+        aWidth*uSize, 0,
+        0, aHeight*uSize
+    );
+
+    vec2 pos = rot * scale * aPos;
+
+    gl_Position = uMatrix * vec4(pos.x + aX, pos.y + aY, 0.0, 1.0);
+
+    vTexCoord = aPos;
+    vColor = vec3(aRed+1.0, aGreen+1.0, aBlue+1.0) * 0.5;
+  }</code></pre>
+        </section>
+        <section>  <!--------------------------------------------------------- 9 ---->
+            <a href="09_smoothTransition/index.html" target="09">09_smoothTransition</a><br>
+            <pre class="smallCode"><code>  attribute vec2 aPos; // Texture coords
+
+  attribute float aX1;
+  attribute float aY1;
+  attribute float aHeight1;
+  attribute float aAngle1;
+  attribute float aRed1;
+  attribute float aGreen1;
+  attribute float aBlue1;
+
+  attribute float aX2;
+  attribute float aY2;
+  attribute float aHeight2;
+  attribute float aAngle2;
+  attribute float aRed2;
+  attribute float aGreen2;
+  attribute float aBlue2;
+
+  uniform mat4 uMatrix; // Transform matrix
+  uniform float uSize; // Global size scale
+  uniform float uTime; // Current time
+  uniform float uMix; // How to mix the two sets of data
+
+  varying vec2 vTexCoord;
+  varying vec3 vColor;
+
+  void main() {
+    // Rotation matrix
+    float angle = mix(aAngle1, aAngle2, uMix) + uTime;
+    float sa = sin(angle);
+    float ca = cos(angle);
+
+    mat2 rot = mat2(
+        ca,  sa,
+        -sa, ca
+    );
+
+    float width = 1.0;
+    float height = mix(aHeight1, aHeight2, uMix);
+
+    // Scaling matrix
+    mat2 scale = mat2(
+        width*uSize, 0,
+        0, height*uSize
+    );
+
+    vec2 pos = rot * scale * aPos;
+
+    float aX = mix(aX1, aX2, uMix);
+    float aY = mix(aY1, aY2, uMix);
+
+    gl_Position = uMatrix * vec4(pos.x + aX, pos.y + aY, 0.0, 1.0);
+
+    // vTexCoord = vec2((aPos.x+1.0)/2.0, (1.0-aPos.y)/2.0);
+    vTexCoord = aPos;
+    vColor = vec3(
+                mix(aRed1, aRed2, uMix)+1.0,
+                mix(aGreen1, aGreen2, uMix)+1.0,
+                mix(aBlue1, aBlue2, uMix)+1.0) * 0.5;
+  }</code></pre>
+        </section>
 
     </div>
 </div>

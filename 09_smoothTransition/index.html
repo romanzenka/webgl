@@ -87,7 +87,7 @@
 
   void main() {
     float r = length(vTexCoord);
-    float rr = r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r*r;
+    float rr = exp(20.0 * log(r));
 
     if (rr>1.0) {
         discard;
@@ -100,6 +100,7 @@
 
 <script>
     variables = ['x', 'y', 'height', 'angle', 'red', 'green', 'blue'];
+    currentSize = 0.01;
 
     function randn_bm() {
         var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
@@ -162,7 +163,7 @@
                              '"' +
                              ");'>" +
                              varName +
-                             "</td></tr>");
+                             "</td><td id='setting_"+varName+"'>"+bufferAssignment[varName]+"</td></tr>");
         }
 
         document.writeln("</table>");
@@ -380,10 +381,17 @@
                 mixStart = new Date().getTime();
                 mixEnd = new Date().getTime() + 1000;
                 bufferAssignmentFuture[currentVarName] = e.keyCode - 48;
+                document.getElementById("setting_"+currentVarName).innerText = e.keyCode - 48;
             }
         }
         if(e.keyCode == 82) {
             rotate = !rotate;
+        }
+        if (e.keyCode == 187) {
+          currentSize += 0.005;
+        }
+        if (e.keyCode == 189) {
+          currentSize -= 0.005;
         }
 
     };
@@ -434,7 +442,7 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         gl.uniformMatrix4fv(uMatrix, false, new Float32Array(transformMatrix));
-        gl.uniform1f(uSize, 0.01);
+        gl.uniform1f(uSize, currentSize);
         gl.uniform1f(uTime, time);
         gl.uniform1f(uMix, mix);
         gl.drawArrays(gl.TRIANGLES, 0, data[0].length * 6);
