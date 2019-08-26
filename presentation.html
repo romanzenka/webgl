@@ -26,43 +26,146 @@
             <a href="https://github.com/romanzenka/webgl">github.com / romanzenka / webgl</a>
         </section>
         <section>
-            <h2>Better Tutorials</h2>
+            <h2>Tutorials</h2>
             <a href="https://webglfundamentals.org/">webglfundamentals.org</a><br>
-            <a href="https://khronos.org/webgl">khronos.org / webgl</a>
-            <a href="https://thebookofshaders.com/">The Book of Shaders</a>
-            <a href="http://www.graphicsgems.org/">Graphics Gems</a>
-            <a href="https://open.gl">OpenGL Tutorials</a>
+            <a href="https://khronos.org/webgl">khronos.org / webgl</a><br>
+            <a href="https://thebookofshaders.com/">The Book of Shaders</a><br>
+            <a href="http://www.graphicsgems.org/">Graphics Gems</a><br>
+            <a href="https://open.gl">OpenGL Tutorials</a><br>
+            <a href="http://www.vizitsolutions.com/portfolio/webgl/gpgpu/">Vizit Solutions GPGPU</a>
         </section>
         <section>
-            <h2>Better Demos</h2>
+            <h2>Demos</h2>
             <a href="https://mrdoob.com/">mrdoob.com</a><br>
             <a href="https://www.shadertoy.com/">shadertoy.com</a><br>
-            <a href="https://threejs.org/">threejs.org</a>
-            <a href="http://stack.gl/#examples">Stack.gl Examples</a>
+            <a href="https://threejs.org/">threejs.org</a><br>
+            <a href="http://stack.gl/#examples">Stack.gl Examples</a><br>
+            <a href="https://acko.net/">acko.net</a>
         </section>
         <section>
-            <h2><span class="fragment fade-out">Better</span> Libraries</h2>
+            <h2>Libraries</h2>
             <a href="https://stack.gl/">stack.gl</a><br>
             <a href="https://threejs.org/">threejs.org</a><br>
             <a href="https://gist.github.com/dmnsgn/76878ba6903cf15789b712464875cfdc">... and many others</a>
         </section>
 
         <section>
-            <h3>Mind shift</h3><br>
-            <h3>Architecture</h3><br>
-            <h3>2D DataViz</h3><br>
+            <h3>Mind shift</h3>
+            <h3>Architecture</h3>
+            <h3>2D DataViz</h3>
             <h3>GPGPU</h3>
         </section>
         <section>
             <h1>MIND SHIFT</h1>
-        </section>
-        <section>
             <p>Your target is human eye <span class="fragment fade-in" data-fragment-index="1">- <im>CHEAT</im></span></p>
             <p>Your hardware is inadequate <span class="fragment fade-in" data-fragment-index="2">- <im>GPU</im></span></p>
         </section>
         <section>
-            First make it <span class="fragment fade-out">right, then make it</span> fast
+            <h1 class="fragment fade-out" data-fragment-index="1">CHEAT</h1>
+            <h1 class="fragment fade-in" data-fragment-index="1">MAGIC</h1>
         </section>
+        <section>
+            <img src="img/level1.gif" style="border: 0px; image-rendering: pixelated" class="stretch">
+        </section>
+        <section class="smallCode"><pre><code class="c">/* XPM */
+static char * Koules_xpm[] = {
+/* width height num_colors chars_per_pixel */
+"29 33 56 1",
+/* colors */
+" 	s None	c None",
+".	c #f8f8e0",
+"X	c #f0f0c0",
+"o	c #e8e8a0",
+"O	c #e0e080",
+"+	c #d8d860",
+"@	c #d0d040",
+"#	c #c0c000",
+"$	c #b8b800",
+"%	c #a8a800",
+"&	c #989800",
+"*	c #c8c820",
+"=	c #b0b000",
+"-	c #888800",
+";	c #a0a000",
+":	c #909000",
+">	c #808000",
+",	c #707000",
+"<	c #787800",
+"1	c #686800",
+"2	c #585800",
+"3	c #505000",
+"4	c #606000",
+"5	c #484800",
+"6	c #404000",
+"7	c #303000",
+"8	c #383800",
+"9	c #282800",
+"0	c #181800",
+"q	c #202000",
+"w	c #101000",
+"e	c black",
+"r	c #080800",
+"t	c #000028",
+"y	c #000010",
+"u	c #000048",
+"i	c #000018",
+"p	c #000008",
+"a	c #000070",
+"s	c #000020",
+"d	c #000038",
+"f	c #000058",
+"g	c #000080",
+"h	c #0000b0",
+"j	c #000050",
+"k	c #000098",
+"l	c #0000c8",
+"z	c #000090",
+"x	c #0000b8",
+"c	c #0000e8",
+"v	c #0000e0",
+"b	c #0000f8",
+"n	c #0000a8",
+"m	c #0000a0",
+"M	c #0000d8",
+"N	c #0000f0",
+/* pixels */
+"                             ",
+"                             ",
+"                             ",
+"           ...XooO           ",
+"        ......XXoO+@#        ",
+"       .......XXoO+@#$       ",
+"     XX.......XXoO+@#$%&     ",
+"    ooX.......XooO+*#=%&-    ",
+"    OoXX.....XXoO+@*#=;&-    ",
+"   +OooXXXXXXXooO+@#$=;:>,   ",
+"  *@+OoooXXXoooO+@*#=%&-<12  ",
+"  #*@+OOoooooOO+@*#$=;:-<13  ",
+"  $#*@++OOOOO++@*#$=%&->,45  ",
+" %=$#*@@+++++@@*#$=%;:><1267 ",
+" ;%=$##**@@@**##$=%;:-<12589 ",
+" :;%==$#######$==%;:-<,43670 ",
+" -:&;%===$$$===%;&:-<,4367qw ",
+" <>-:&;;%%%%%;;&:-><,42589we ",
+" 1<>--:&&&&&&&:--><1435890re ",
+" 21,<<>-------><<,1236890ree ",
+" t2411eeytu<<<,11eeytu90ree  ",
+" i653pepytua1442pepytuareee  ",
+"  78syyysdfgh35syyysdfghee   ",
+"   qdtttdjakl88dtttdjaklee   ",
+"   sfuuufazxc9qfuuufazxce    ",
+"    gaaagkxvbwrgaaagkxvbe    ",
+"    hnmnhlcbbeehnmnhlcbb     ",
+"     vMvNbbbeeeevMvNbbb      ",
+"      bbbbbeeeeeebbbbb       ",
+"           eeeeeee           ",
+"                             ",
+"                             ",
+"                             "};</code></pre></section>
+        <section>
+            <h1>GPU</h1>
+        </section>
+
         <section>
             <table class="stretch">
                 <tr>
@@ -402,6 +505,12 @@ ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
   }</code></pre>
         </section>
 
+        <section>
+            <h2>GPGPU</h2>
+            <img src="img/concepts.svg" class="stretch" style="background: white"/>
+            <a href="http://www.vizitsolutions.com/portfolio/webgl/gpgpu/"/>
+        </section>
+
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.min.js"></script>
@@ -415,7 +524,7 @@ ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
     ]
   });
 
-  Reveal.slide( 20 );
+  Reveal.slide( 7 );
 </script>
 </body>
 </html>
