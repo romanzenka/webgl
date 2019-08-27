@@ -1,5 +1,7 @@
+<!doctype html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/moon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/monokai-sublime.min.css">
@@ -13,6 +15,10 @@
         }
 
         im { color: white }
+
+        ::selection {
+            background: #ffb7b7;
+        }
     </style>
 </head>
 <body>
@@ -20,7 +26,9 @@
     <div class="slides">
         <section  data-background-color="#000000">
             <img style="border:0; background: none; box-shadow: none" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/2880px-WebGL_Logo.svg.png">
-            Roman Ženka
+            Roman Ženka<br>
+            <span class="fragment fade-in">Disclaimer: <a href="https://news.ycombinator.com/item?id=17391208">WebGL is dead</a></span><br>
+            <span class="fragment fade-in">However: <a href="https://en.wikipedia.org/wiki/WebGPU">WebGPU does not exist yet!</a></span>
         </section>
         <section>
             <a href="https://github.com/romanzenka/webgl">github.com / romanzenka / webgl</a>
@@ -67,7 +75,7 @@
         <section>
             <img src="img/level1.gif" style="border: 0px; image-rendering: pixelated" class="stretch">
         </section>
-        <section class="smallCode"><pre><code class="c">/* XPM */
+        <section><pre class="smallCode stretch"><code class="c">/* XPM */
 static char * Koules_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "29 33 56 1",
@@ -439,7 +447,7 @@ gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   varying highp vec2 vTextureCoord;
 
   void main() {
-    gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    gl_FragColor = texture2D(uSampler, vTextureCoord);
   }</code></pre>
         </section>
         <section>  <!--------------------------------------------------------- 4 ---->
@@ -507,9 +515,8 @@ ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
 
   void main() {
     // Rotation matrix
-    float angle = aAngle + uTime;
-    float sa = sin(angle);
-    float ca = cos(angle);
+    float sa = sin(aAngle);
+    float ca = cos(aAngle);
 
     mat2 rot = mat2(
         ca,  sa,
@@ -610,12 +617,26 @@ ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
     float d = 1.0 / 512.0;
     gl_FragColor = (
         texture2D(uSampler, vTextureCoord) * 4.0 +
-        texture2D(uSampler, vTextureCoord + vec2(d  , 0.0)) +
-        texture2D(uSampler, vTextureCoord + vec2(0.0, d)) +
-        texture2D(uSampler, vTextureCoord + vec2(-d , 0.0)) +
-        texture2D(uSampler, vTextureCoord + vec2(0.0, -d))
+        texture2D(uSampler, vTextureCoord + vec2( d   , 0.0)) +
+        texture2D(uSampler, vTextureCoord + vec2( 0.0 , d  )) +
+        texture2D(uSampler, vTextureCoord + vec2( -d  , 0.0)) +
+        texture2D(uSampler, vTextureCoord + vec2( 0.0 , -d ))
         ) / 8.0;
   }</code></pre>
+        </section>
+
+        <section> <!--------------------------------------------------------- 10 ---->
+            <a href="11_blur2/index.html" target="11">11_blur</a><br>
+            Same, now with more float.
+            <pre><code class="javascript">// This is available for newer WebGL only
+gl = canvas.getContext("webgl2");
+
+// Make sure we can do linear interpolation on floating-point textures
+gl.getExtension('OES_texture_float_linear');
+
+// Enable floating point framebuffers
+gl.getExtension('EXT_color_buffer_float');</code></pre>
+
         </section>
 
     </div>
