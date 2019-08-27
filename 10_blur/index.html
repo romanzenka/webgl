@@ -1,5 +1,5 @@
 <html>
-<head><title>Textured rectangle</title></head>
+<head><title>Blur GPGPU</title></head>
 <body style="background-color: #203040">
 
 <canvas id="webGlCanvas" width="512" height="512">
@@ -213,8 +213,6 @@
     // Switch to compute shader
     gl.useProgram(computeShader);
 
-    var posAttribute = gl.getAttribLocation(computeShader, "aPos");
-
     // Bind the framebuffer
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     // attach the texture as the first color attachment
@@ -223,6 +221,7 @@
 
     gl.viewport(0, 0, textureWidth, textureHeight);
 
+    var posAttribute = gl.getAttribLocation(computeShader, "aPos");
     gl.enableVertexAttribArray(posAttribute);
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
     gl.vertexAttribPointer(posAttribute, 2, gl.FLOAT, false, 0, 0);

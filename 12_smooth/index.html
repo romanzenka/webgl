@@ -1,0 +1,400 @@
+<html>
+<head><title>Smoothing on GPU</title></head>
+<body style="background-color: #203040">
+
+<input type="range" min="3" max="16" value="10" step="0.01" style="width: 1024px" oninput="window.smoothing=Math.floor((+this.value * +this.value)); requestAnimationFrame(drawAll)"><br><br>
+<input type="range" min="1" max="100" value="1" step="0.01" style="width: 1024px" oninput="window.zoom=+this.value; requestAnimationFrame(drawAll)"><br><br>
+<canvas id="webGlCanvas" width="1024" height="512">
+    No canvas support for you.
+</canvas>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+  precision highp float;
+
+  // Quad geometry
+  attribute vec2 aPos;
+
+  // X coordinate to evaluate
+  attribute float aX;
+
+  // Zoom level
+  uniform float uZoom;
+
+  // Sample from the compute shader
+  uniform sampler2D uSampler;
+
+  varying vec2 vTexCoord;
+
+  void main() {
+    vec2 offset;
+
+    offset.x = (aX / (512. * 256.) - 1.0) * uZoom + (uZoom - 1.0);
+    offset.y = texture2D(uSampler, vec2(mod(aX, 512.0) / 512.0, aX / (512. * 512.))).r;
+
+    gl_Position = vec4((aPos / 512.) + offset, 0.0, 1.0);
+    vTexCoord = aPos;
+  }
+</script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+  precision highp float;
+
+  varying vec2 vTexCoord;
+
+  void main() {
+    float r = length(vTexCoord);
+
+    if (r>1.0) {
+        discard;
+    }
+
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0 - r);
+  }
+</script>
+
+<script id="shader-compute-vs" type="x-shader/x-vertex">
+  precision highp float;
+
+  attribute vec2 aPos2;
+
+  varying vec2 vTextureCoord;
+
+  void main() {
+    vTextureCoord = (vec2(aPos2.x + 1.0, 1.0 + aPos2.y)) * 0.5;
+
+    gl_Position = vec4(aPos2, 0.0, 1.0);
+  }
+</script>
+
+<script id="shader-compute-fs" type="x-shader/x-fragment">
+  precision highp float;
+
+  uniform sampler2D uComputeSampler;
+
+  uniform float uSmoothing;
+
+  varying vec2 vTextureCoord;
+
+  void main() {
+    const float d = 1.0 / 512.0;
+
+    float accum = 0.;
+    float weight = 0.;
+
+    float pos = (vTextureCoord.x + vTextureCoord.y * 512.0) * 512.0;
+    float h = uSmoothing / 2.;
+    float h2 = h*h;
+    float p = pos - h;
+    float w = 0.;
+
+    for(float i=0.; i<=1000.; i++) {
+        if (i > uSmoothing) {
+            break;
+        }
+        w = exp(- (i - h) * (i - h) / h2);
+        accum += w * texture2D(uComputeSampler, vec2(mod((p+i), 512.0) / 512.0, (p+i) / (512. * 512.))).r;
+        weight += w;
+    }
+
+    gl_FragColor = vec4(accum / weight, 0, 0, 1);
+  }
+</script>
+
+<script>
+  function initWebGL(canvas) {
+    gl = null;
+
+    try {
+      // Try to grab the standard context. If it fails, fallback to experimental.
+      gl = canvas.getContext("webgl2") || canvas.getContext("experimental-webgl2");
+    }
+    catch (e) {
+    }
+
+    // If we don't have a GL context, give up now
+    if (!gl) {
+      alert("Unable to initialize WebGL. Your browser may not support it.");
+      gl = null;
+    }
+
+    return gl;
+  }
+
+  function getShader(gl, id) {
+    var shaderScript, theSource, currentChild, shader;
+
+    shaderScript = document.getElementById(id);
+
+    if (!shaderScript) {
+      return null;
+    }
+
+    theSource = "";
+    currentChild = shaderScript.firstChild;
+
+    while (currentChild) {
+      if (currentChild.nodeType == currentChild.TEXT_NODE) {
+        theSource += currentChild.textContent;
+      }
+
+      currentChild = currentChild.nextSibling;
+    }
+
+    if (shaderScript.type == "x-shader/x-fragment") {
+      shader = gl.createShader(gl.FRAGMENT_SHADER);
+    }
+    else if (shaderScript.type == "x-shader/x-vertex") {
+      shader = gl.createShader(gl.VERTEX_SHADER);
+    }
+    else {
+      // Unknown shader type
+      return null;
+    }
+
+    gl.shaderSource(shader, theSource);
+
+    // Compile the shader program
+    gl.compileShader(shader);
+
+    // See if it compiled successfully
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      alert("An error occurred compiling the shader " + id + ": " + gl.getShaderInfoLog(shader));
+      return null;
+    }
+
+    return shader;
+  }
+
+  function initShader(vs, fs) {
+    var vertexShader  = getShader(gl, vs);
+    var fragmentShader = getShader(gl, fs);
+
+    // Create the shader program
+
+    var shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+
+    // If creating the shader program failed, alert
+
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+      alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shader));
+    }
+
+    return shaderProgram;
+  }
+
+  function makeSquareVerticesBuffer() {
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    var vertices = [
+      1.0, 1.0,
+      -1.0, 1.0,
+      1.0, -1.0,
+      -1.0, -1.0
+    ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    return buffer;
+  }
+
+  function makeSquareVerticesBufferMult() {
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    var vertices = [
+      1.0, 1.0,
+      -1.0, 1.0,
+      1.0, -1.0,
+      -1.0, -1.0
+    ];
+
+    var data = new Float32Array(8 * 512 * 512);
+    for (var i = 0; i < 8 * 512 * 512; i++) {
+      data[i] = vertices[i % 8];
+    }
+
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    return buffer;
+  }
+
+  function makeXCoordinateBuffer() {
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    var xCoordinates = new Float32Array(4 * 512 * 512);
+    for (i = 0; i < 4 * 512*512; i++) {
+      xCoordinates[i] = Math.floor(i / 4);
+    }
+
+    gl.bufferData(gl.ARRAY_BUFFER, xCoordinates, gl.STATIC_DRAW);
+
+    return buffer;
+  }
+
+
+  function createTargetTexture(width, height) {
+    // create to render to
+    var targetTextureWidth = width;
+    var targetTextureHeight = height;
+    var targetTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, targetTexture);
+
+    {
+      var level = 0;
+      var internalFormat = gl.R32F; // Single channel 32-bit float
+      var border = 0;
+      var format = gl.RED;
+      var type = gl.FLOAT;
+      var data = null;
+
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+
+      gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+        targetTextureWidth, targetTextureHeight, border,
+        format, type, data);
+    }
+
+    return targetTexture;
+  }
+
+  function makeData() {
+    var n = 512 * 512;
+    var data = new Float32Array(n);
+    var noisePercent = 0.4;
+    for(var i=0; i<n; i++) {
+      data[i] = Math.sin((i + 0.0) / n * Math.PI * 2.0)*(1.0 - noisePercent) + (Math.random()*(noisePercent * 2) - noisePercent);
+    }
+    return data;
+  }
+
+  function loadDataToTexture(texture, data) {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.R32F, 512, 512, 0, gl.RED, gl.FLOAT, data);
+  }
+
+  function computeStep() {
+    // Bind the framebuffer
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.disable(gl.DEPTH_TEST);
+    gl.disable(gl.BLEND);
+    gl.viewport(0, 0, textureWidth, textureHeight);
+    gl.clearColor(0, 0, 0, 1);
+
+    // Switch to compute shader
+    gl.useProgram(computeShader);
+
+    // Set position
+    var posAttribute = gl.getAttribLocation(computeShader, "aPos2");
+    gl.enableVertexAttribArray(posAttribute);
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+    gl.vertexAttribPointer(posAttribute, 2, gl.FLOAT, false, 0, 0);
+
+    // Set smoothing
+    var smoothingUniform = gl.getUniformLocation(computeShader, "uSmoothing");
+    gl.uniform1f(smoothingUniform, window.smoothing);
+
+    // Set texture
+    gl.activeTexture(gl.TEXTURE2);
+    gl.bindTexture(gl.TEXTURE_2D, textures[0]); // Source
+    var samplerUniform = gl.getUniformLocation(computeShader, "uComputeSampler");
+    gl.uniform1i(samplerUniform, 2);
+
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    gl.disableVertexAttribArray(posAttribute);
+  }
+
+  function drawToScreenStep() {
+    // Draw to screen
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    gl.useProgram(drawShader);
+
+    var posAttribute = gl.getAttribLocation(drawShader, "aPos");
+    gl.enableVertexAttribArray(posAttribute);
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBufferMult);
+    gl.vertexAttribPointer(posAttribute, 2, gl.FLOAT, false, 0, 0);
+
+    var xAttribute = gl.getAttribLocation(drawShader, "aX");
+    gl.enableVertexAttribArray(xAttribute);
+    gl.bindBuffer(gl.ARRAY_BUFFER, xCoordinateBuffer);
+    gl.vertexAttribPointer(xAttribute, 1, gl.FLOAT, false, 0, 0);
+
+    // Set texture
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, textures[1]); // Sample from target texture
+    var samplerUniform = gl.getUniformLocation(drawShader, "uSampler");
+    gl.uniform1i(samplerUniform, 1);
+
+    var zoomUniform = gl.getUniformLocation(drawShader, "uZoom");
+    gl.uniform1f(zoomUniform, window.zoom);
+
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4 * 512 * 512);
+
+    gl.disableVertexAttribArray(posAttribute);
+    gl.disableVertexAttribArray(xAttribute);
+  }
+
+  window.zoom = 1;
+  window.smoothing = 100;
+
+  var textureWidth = 512;
+  var textureHeight = 512;
+
+  var canvas = document.getElementById('webGlCanvas');
+  var gl = initWebGL(canvas);
+
+  // Enable floating point framebuffers
+  var ext = gl.getExtension('EXT_color_buffer_float');
+  if (!ext) {
+    alert("Unable to initialize WebGL. Your browser does not support the float framebuffers");
+  }
+
+  gl.disable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.ALWAYS);
+
+  drawShader = initShader("shader-vs", "shader-fs");
+  computeShader = initShader("shader-compute-vs", "shader-compute-fs");
+
+  var squareVerticesBuffer = makeSquareVerticesBuffer();
+  var squareVerticesBufferMult = makeSquareVerticesBufferMult();
+  var xCoordinateBuffer = makeXCoordinateBuffer();
+
+  var textures = [];
+  textures[0] = createTargetTexture(textureWidth, textureHeight); // Source texture
+  textures[1] = createTargetTexture(textureWidth, textureHeight); // Target texture
+
+  // Framebuffer lets us tell WebGL - draw to this texture instead of to screen
+  var framebuffer = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, textures[1], 0); // Target
+
+  // Make initial data
+  var data = makeData();
+  loadDataToTexture(textures[0], data);
+
+  function drawAll() {
+    computeStep();
+    drawToScreenStep();
+  }
+
+  requestAnimationFrame(drawAll);
+
+
+</script>
+
+</body>
+</html>
