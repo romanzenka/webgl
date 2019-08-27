@@ -162,6 +162,40 @@ static char * Koules_xpm[] = {
 "                             ",
 "                             ",
 "                             "};</code></pre></section>
+
+        <section>
+            <pre class="smallCode"><code>/*
+ * hardcoded bitmap drawing routines
+ */
+static char    *
+draw_ball_bitmap (int radius, CONST int color)
+{
+  char           *bitmap = NULL, *point;
+  int             x, y, r;
+  radius /= DIV;
+  if ((bitmap = alloca ((radius * 2) * (radius * 2) + 2)) == NULL)
+    perror ("create_ball_bitmap"), exit (-1);
+  point = bitmap;
+  for (y = 0; y < radius * 2; y++)
+    for (x = 0; x < radius * 2; x++, point++)
+      {
+	if ((x - radius) * (x - radius) + (y - radius) * (y - radius)
+	    < (radius - 0.5) * (radius - 0.5))
+	  {
+	    r = (x - 3 * radius / 4) * (x - 3 * radius / 4) +
+	      (y - radius / 4) * (y - radius / 4);
+	    r = r * 32 / (1.5 * radius) / (1.5 * radius);
+	    if (r > 31)
+	      r = 31;
+	    *point = color + r;
+	  }
+	else
+	  *point = 0;
+      }
+  return (CompileBitmap (radius * 2, radius * 2, (char *) bitmap));
+}</code></pre>
+        </section>
+
         <section>
             <h1>GPU</h1>
         </section>
@@ -208,6 +242,25 @@ static char * Koules_xpm[] = {
         </section>
         <section data-transition="fade-in">
             <img src="img/vulkan_simplified_pipeline_2.svg" style="background-color: #ccd"  class="stretch">
+        </section>
+
+        <section>
+            <h3>Initialization</h3>
+            <pre class="smallCode"><code class="javascript">var _canvas = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
+
+_canvas.addEventListener( 'webglcontextlost', onContextLost, false );
+_canvas.addEventListener( 'webglcontextrestored', onContextRestore, false );
+
+_gl = _canvas.getContext( 'webgl', contextAttributes ) ||
+      _canvas.getContext( 'experimental-webgl', contextAttributes );
+
+if ( _gl === null ) {
+    if ( _canvas.getContext( 'webgl' ) !== null ) {
+        throw new Error( 'Error creating WebGL context with your selected attributes.' );
+    } else {
+        throw new Error( 'Error creating WebGL context.' );
+    }
+}</code></pre>
         </section>
 
         <section>
@@ -261,6 +314,58 @@ void main() {
         </section>
 
         <section>
+            <h3>Trigger drawing</h3>
+            <pre><code>// Compile shaders
+shaderProgram = gl.createProgram();
+gl.attachShader(shaderProgram, vertexShader);
+gl.attachShader(shaderProgram, fragmentShader);
+gl.linkProgram(shaderProgram);
+gl.useProgram(shaderProgram);
+
+// Set up position attribute
+var posAttribute = gl.getAttribLocation(shaderProgram, "aPos");
+gl.enableVertexAttribArray(posAttribute);
+gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+gl.vertexAttribPointer(posAttribute, 2, gl.FLOAT, false, 0, 0);
+
+// Set up transform matrix
+transformMatrix = [
+    0.5, 0, 0, 0,
+    0, 0.5, 0, 0,
+    0,   0, 1, 0,
+    0,   0, 0, 1
+];
+var uniform = gl.getUniformLocation(shaderProgram, "uMatrix");
+gl.uniformMatrix4fv(uniform, false, new Float32Array(transformMatrix));
+
+// Draw!
+gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            </code></pre>
+        </section>
+
+        <section> <!--------------------------------------------------------- 1 ---->
+            <a href="01_init/index.html" target="01">01_init</a>
+            <h4 align="left">Vertex Shader</h4>
+            <pre class="glsl smallCode"><code>  attribute vec2 aPos;
+
+  uniform mat4 uMatrix;
+
+  void main() {
+    gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
+  }</code></pre>
+            <br>
+            <h4 align="left">Fragment Shader</h4>
+            <pre class="glsl smallCode"><code>  void main() {
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+  }</code></pre>
+        </section>
+
+        <section>
+            <h3>Homogeneous Coordinates</h3>
+            <img src="img/der_barycentrishe_calcul.jpg" class="stretch"/>
+        </section>
+
+        <section>
             <h3>Stateful API</h3>
             <div align="left">
                 not object oriented<br>
@@ -285,22 +390,6 @@ void main() {
             Draw it, fast.
         </section>
 
-        <section> <!--------------------------------------------------------- 1 ---->
-            <a href="01_init/index.html" target="01">01_init</a>
-            <h4 align="left">Vertex Shader</h4>
-            <pre class="glsl smallCode"><code>  attribute vec2 aPos;
-
-  uniform mat4 uMatrix;
-
-  void main() {
-    gl_Position = uMatrix * vec4(aPos, 0.0, 1.0);
-  }</code></pre>
-            <br>
-            <h4 align="left">Fragment Shader</h4>
-            <pre class="glsl smallCode"><code>  void main() {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-  }</code></pre>
-        </section>
         <section> <!--------------------------------------------------------- 2 ---->
             <a href="02_circle/index.html" target="02">02_circle</a>
             <h4 align="left">Vertex Shader</h4>
@@ -541,8 +630,6 @@ ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
       { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.min.js', async: true },
     ]
   });
-
-  Reveal.slide( 7 );
 </script>
 </body>
 </html>
