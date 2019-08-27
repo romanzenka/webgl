@@ -511,6 +511,24 @@ ext.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, data.x.length);</code></pre>
             <a href="http://www.vizitsolutions.com/portfolio/webgl/gpgpu/"/>
         </section>
 
+        <section>
+            <a href="10_blur/index.html" target="10">10_blur</a><br>
+            <pre><code>
+  uniform sampler2D uSampler;
+  varying vec2 vTextureCoord;
+
+  void main() {
+    float d = 1.0 / 512.0;
+    gl_FragColor = (
+        texture2D(uSampler, vTextureCoord) * 4.0 +
+        texture2D(uSampler, vTextureCoord + vec2(d  , 0.0)) +
+        texture2D(uSampler, vTextureCoord + vec2(0.0, d)) +
+        texture2D(uSampler, vTextureCoord + vec2(-d , 0.0)) +
+        texture2D(uSampler, vTextureCoord + vec2(0.0, -d))
+        ) / 8.0;
+  }</code></pre>
+        </section>
+
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.min.js"></script>
