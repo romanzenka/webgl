@@ -205,15 +205,18 @@
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
     var vertices = [
-      1.0, 1.0,
-      -1.0, 1.0,
-      1.0, -1.0,
-      -1.0, -1.0
+      1.0, 1.0,   // 1
+      -1.0, 1.0,  // 2
+      1.0, -1.0,  // 3
+
+      1.0, -1.0,  // 3
+      -1.0, 1.0,  // 2
+      -1.0, -1.0, // 4
     ];
 
-    var data = new Float32Array(8 * 512 * 512);
-    for (var i = 0; i < 8 * 512 * 512; i++) {
-      data[i] = vertices[i % 8];
+    var data = new Float32Array(12 * 512 * 512);
+    for (var i = 0; i < 12 * 512 * 512; i++) {
+      data[i] = vertices[i % 12];
     }
 
     gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
@@ -224,9 +227,9 @@
     var buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
-    var xCoordinates = new Float32Array(4 * 512 * 512);
-    for (i = 0; i < 4 * 512*512; i++) {
-      xCoordinates[i] = Math.floor(i / 4);
+    var xCoordinates = new Float32Array(6 * 512 * 512);
+    for (i = 0; i < 6 * 512*512; i++) {
+      xCoordinates[i] = Math.floor(i / 6);
     }
 
     gl.bufferData(gl.ARRAY_BUFFER, xCoordinates, gl.STATIC_DRAW);
@@ -342,7 +345,7 @@
     var zoomUniform = gl.getUniformLocation(drawShader, "uZoom");
     gl.uniform1f(zoomUniform, window.zoom);
 
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4 * 512 * 512);
+    gl.drawArrays(gl.TRIANGLES, 0, 6 * 512 * 512);
 
     gl.disableVertexAttribArray(posAttribute);
     gl.disableVertexAttribArray(xAttribute);
